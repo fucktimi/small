@@ -1,8 +1,8 @@
 name: Sync upstream
 on:
   schedule:
-    - cron: '0 2 * * *'   # 每天一次
-  workflow_dispatch:       # 允许手动触发
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -13,16 +13,16 @@ jobs:
       - name: Pull folders from upstream
         run: |
           git clone --depth 1 --filter=blob:none --sparse \
-            https://github.com/QiuSimons/luci-app-honk.git /tmp/small
-          git -C /tmp/small sparse-checkout set honk luci-app-honk
+            https://github.com/QiuSimons/luci-app-honk.git /tmp/up
+          git -C /tmp/up sparse-checkout set honk luci-app-honk
           rm -rf honk luci-app-honk
-          cp -r /tmp/small/honk /tmp/small/luci-app-honk .
+          cp -r /tmp/up/honk /tmp/up/luci-app-honk .
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           if ! git diff --cached --quiet; then
-            git commit -m "sync from kenzok8/small"
+            git commit -m "sync from QiuSimons/luci-app-honk"
             git push
           fi
