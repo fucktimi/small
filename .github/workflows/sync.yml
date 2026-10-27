@@ -13,7 +13,7 @@ jobs:
       - name: Pull folders from upstream
         run: |
           git clone --depth 1 --filter=blob:none --sparse \
-            https://github.com/kenzok8/small.git /tmp/small
+            https://github.com/QiuSimons/luci-app-honk.git /tmp/small
           git -C /tmp/small sparse-checkout set honk luci-app-honk
           rm -rf honk luci-app-honk
           cp -r /tmp/small/honk /tmp/small/luci-app-honk .
